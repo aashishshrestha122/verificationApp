@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from "react-bootstrap";
 import ReactInputVerificationCode from 'react-input-verification-code';
+import { useHistory } from "react-router-dom";
 
 import ErrorComponent from '../../component/ErrorComponent';
 
@@ -26,6 +27,8 @@ const Home = () => {
 		textAlign: 'center'
 	}
 
+	const history = useHistory();
+
 	const [value, setValue] = React.useState("");
 	const [showErr, setShowErr] = React.useState(false);
 	const [resMessage, setResMessage] = React.useState([]);
@@ -36,6 +39,9 @@ const Home = () => {
 		const payload = { value };
 		try {
 			const { data } = await http.post('/verify/', payload);
+			if (data) {
+				history.push('/success')
+			}
 		} catch (err) {
 			setShowErr(true);
 			setResMessage({ err: err.response.data.message });
